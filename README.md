@@ -25,6 +25,8 @@ Options:
     	Print what would be run where, without actually doing it
   -f string
     	Filter directories by RE2 regexp (default ".*")
+  -version
+    	Print version and exit
 
 Examples:
   shotgun git pull
