@@ -1,10 +1,10 @@
-# shotgun
+# shotgun [![Build Status](https://travis-ci.org/bbrks/shotgun.svg?branch=master)](https://travis-ci.org/bbrks/shotgun)
 
 Take the shotgun approach to your terminal.
 
 A tool for running commands in parallel on a set of directories.
 
-## Installation
+## Installation/Updating
 
 ```
 go get -u github.com/bbrks/shotgun
@@ -31,12 +31,15 @@ Options:
 Examples:
   shotgun git pull
     	Run a command in each child directory of the current
-  shotgun -f '^a.*$' git pull
+  shotgun -f '^a' git pull
     	Run a command in each directory beginning with the letter 'a'
   shotgun -dir $GOPATH/src/github.com/bbrks git status --short
     	Run a command for each directory in '$GOPATH/src/github.com/bbrks'
   shotgun 'git checkout -- .; git checkout develop; git fetch; git pull'
     	Wrap commands in quotes and separate by semicolons to chain sequentially
-  shotgun -dry-run 'rm LICENSE.md'
+  shotgun -dry-run 'rm .travis.yml'
     	Print what would be run where
 ```
+
+## License
+This project is licensed under the [MIT License](LICENSE).
