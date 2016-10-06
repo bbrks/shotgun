@@ -10,7 +10,7 @@ import (
 	"sync"
 )
 
-const version = "v0.2"
+const version = "v0.2.1"
 
 var (
 	f      = flag.String("f", ".*", "Filter directories by RE2 regexp")
