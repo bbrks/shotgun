@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"regexp"
 	"strings"
 	"sync"
 )
 
-const version = "0.1"
+const version = "v0.2"
 
 var (
 	f      = flag.String("f", ".*", "Filter directories by RE2 regexp")
@@ -24,7 +23,7 @@ func main() {
 	flag.Parse()
 
 	if *ver {
-		fmt.Printf("shotgun version %s\n", version)
+		fmt.Printf("shotgun %s\n", version)
 		os.Exit(0)
 	}
 
@@ -42,8 +41,8 @@ func main() {
 	}
 
 	var (
-		cmd = strings.Join(flag.Args(), " ")
-		wg  = sync.WaitGroup{}
+		c  = strings.Join(flag.Args(), " ")
+		wg = sync.WaitGroup{}
 	)
 
 	for _, d := range f {
@@ -52,11 +51,11 @@ func main() {
 			defer wg.Done()
 			if d.IsDir() && fRegexp.MatchString(d.Name()) {
 				if *dryRun {
-					fmt.Printf("Would run '%s' in '%s'\n", cmd, d.Name())
+					fmt.Printf("Would run '%s' in '%s'\n", c, d.Name())
 					return
 				}
-				exec.Command("sh", "-c", "cd "+d.Name()+";"+cmd).Run()
-				fmt.Printf("Running '%s' in '%s'\n", cmd, d.Name())
+				cmd(d.Name(), c).Run()
+				fmt.Printf("Running '%s' in '%s'\n", c, d.Name())
 			}
 		}(d)
 	}

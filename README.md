@@ -1,8 +1,12 @@
-# shotgun [![Build Status](https://travis-ci.org/bbrks/shotgun.svg?branch=master)](https://travis-ci.org/bbrks/shotgun)
-
-Take the shotgun approach to your terminal. :boom:
+[![Shotgun Logo](https://cdn.rawgit.com/bbrks/shotgun/master/logo.svg)](https://github.com/bbrks/shotgun)
 
 A tool for running commands in parallel on a set of directories.
+
+[![GitHub Release](https://img.shields.io/github/release/bbrks/shotgun.svg?maxAge=3600)](https://github.com/bbrks/shotgun/releases)
+[![Build Status](https://img.shields.io/travis/bbrks/shotgun.svg?maxAge=3600)](https://travis-ci.org/bbrks/shotgun)
+[![License](https://img.shields.io/github/license/bbrks/shotgun.svg?maxAge=2592000)](https://github.com/bbrks/shotgun/blob/master/LICENSE)
+
+Take the shotgun approach to your terminal. :boom:
 
 ## Installation/Updating
 
