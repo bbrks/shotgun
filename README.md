@@ -2,7 +2,7 @@
 
 A tool for running commands in parallel on a set of directories.
 
-[![GitHub Release](https://img.shields.io/github/release/bbrks/shotgun.svg?maxAge=3600)](https://github.com/bbrks/shotgun/releases)
+[![GitHub Tag](https://img.shields.io/github/tag/bbrks/shotgun.svg?maxAge=3600)](https://github.com/bbrks/shotgun/tags)
 [![Build Status](https://img.shields.io/travis/bbrks/shotgun.svg?maxAge=3600)](https://travis-ci.org/bbrks/shotgun)
 [![License](https://img.shields.io/github/license/bbrks/shotgun.svg?maxAge=2592000)](https://github.com/bbrks/shotgun/blob/master/LICENSE)
 
