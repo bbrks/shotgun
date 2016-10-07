@@ -29,6 +29,10 @@ What about removing all local changes and syncing with the remote master branche
 shotgun 'git fetch origin; git reset --hard origin/master; git clean -f'
 ```
 
+See how fast running commands in parallel vs. sequentially actually is:
+<a href="https://asciinema.org/a/d3kj4vdi47orpl5tleqn0c9rx" target="_blank"><img src="https://asciinema.org/a/d3kj4vdi47orpl5tleqn0c9rx.png" style="width:250px"/></a>
+<a href="https://asciinema.org/a/b0d16ry57hsn1vfmq2ez7u1an" target="_blank"><img src="https://asciinema.org/a/b0d16ry57hsn1vfmq2ez7u1an.png" style="width:250px"/></a>
+
 ## Usage
 
 ```
