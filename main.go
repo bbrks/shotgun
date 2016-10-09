@@ -6,17 +6,19 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
+	"runtime"
 	"strings"
 	"sync"
 )
 
-const version = "v0.2.1"
+const version = "v0.2.2"
 
 var (
-	f      = flag.String("f", ".*", "Filter directories by RE2 regexp")
-	dir    = flag.String("d", ".", "Working directory - search from here")
-	dryRun = flag.Bool("dry-run", false, "Print what would be run where, without actually doing it")
-	ver    = flag.Bool("version", false, "Print version and exit")
+	f        = flag.String("f", ".*", "Filter directories by RE2 regexp")
+	dir      = flag.String("d", ".", "Working directory - search from here")
+	throttle = flag.Int("c", runtime.GOMAXPROCS(0)*64, "Maximum number of concurrent commands")
+	dryRun   = flag.Bool("dry-run", false, "Print what would be run where, without actually doing it")
+	ver      = flag.Bool("version", false, "Print version and exit")
 )
 
 func main() {
@@ -43,12 +45,15 @@ func main() {
 	var (
 		c  = strings.Join(flag.Args(), " ")
 		wg = sync.WaitGroup{}
+		t  = make(chan struct{}, *throttle)
 	)
 
 	for _, d := range f {
 		wg.Add(1)
+		t <- struct{}{}
 		go func(d os.FileInfo) {
 			defer wg.Done()
+			defer func() { <-t }()
 			if d.IsDir() && fRegexp.MatchString(d.Name()) {
 				if *dryRun {
 					fmt.Printf("Would run '%s' in '%s'\n", c, d.Name())
