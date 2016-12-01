@@ -17,6 +17,7 @@ var (
 	f        = flag.String("f", ".*", "Filter directories by RE2 regexp")
 	dir      = flag.String("d", ".", "Working directory - search from here")
 	throttle = flag.Int("c", runtime.GOMAXPROCS(0)*64, "Maximum number of concurrent commands")
+	v        = flag.Bool("verbose", false, "Print all lines of command output")
 	dryRun   = flag.Bool("dry-run", false, "Print what would be run where, without actually doing it")
 	ver      = flag.Bool("version", false, "Print version and exit")
 )
@@ -59,8 +60,13 @@ func main() {
 					fmt.Printf("Would run '%s' in '%s'\n", c, d.Name())
 					return
 				}
-				cmd(d.Name(), c).Run()
+				command := cmd(d.Name(), c)
 				fmt.Printf("Running '%s' in '%s'\n", c, d.Name())
+				if *v {
+					command.Stdout = os.Stdout
+					command.Stderr = os.Stderr
+				}
+				command.Run()
 			}
 		}(d)
 	}
