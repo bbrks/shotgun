@@ -1,10 +1,12 @@
-[![Shotgun Logo](https://cdn.rawgit.com/bbrks/shotgun/master/logo.svg)](https://github.com/bbrks/shotgun)
+# [![Shotgun Logo](https://cdn.rawgit.com/bbrks/shotgun/master/logo.svg)](https://github.com/bbrks/shotgun)
 
 A tool for running commands in parallel on a set of directories.
 
-[![GitHub Tag](https://img.shields.io/github/tag/bbrks/shotgun.svg?maxAge=3600)](https://github.com/bbrks/shotgun/tags)
-[![Build Status](https://img.shields.io/travis/bbrks/shotgun.svg?maxAge=3600)](https://travis-ci.org/bbrks/shotgun)
-[![License](https://img.shields.io/github/license/bbrks/shotgun.svg?maxAge=2592000)](https://github.com/bbrks/shotgun/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/bbrks/shotgun.svg)](https://travis-ci.org/bbrks/shotgun)
+[![GoDoc](https://godoc.org/github.com/bbrks/shotgun?status.svg)](https://godoc.org/github.com/bbrks/shotgun)
+[![Go Report Card](https://goreportcard.com/badge/github.com/bbrks/shotgun)](https://goreportcard.com/report/github.com/bbrks/shotgun)
+[![GitHub tag](https://img.shields.io/github/tag/bbrks/shotgun.svg)](https://github.com/bbrks/shotgun/releases)
+[![license](https://img.shields.io/github/license/bbrks/shotgun.svg)](https://github.com/bbrks/shotgun/blob/master/LICENSE)
 
 Take the shotgun approach to your terminal. :boom:
 
