@@ -1,99 +1,23 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-	"io/ioutil"
+	"log"
 	"os"
-	"regexp"
-	"runtime"
-	"strings"
-	"sync"
+
+	"github.com/pkg/errors"
 )
 
-const version = "v0.2.2"
-
-var (
-	f        = flag.String("f", ".*", "Filter directories by RE2 regexp")
-	dir      = flag.String("d", ".", "Working directory - search from here")
-	throttle = flag.Int("c", runtime.GOMAXPROCS(0)*64, "Maximum number of concurrent commands")
-	v        = flag.Bool("verbose", false, "Print all lines of command output")
-	dryRun   = flag.Bool("dry-run", false, "Print what would be run where, without actually doing it")
-	ver      = flag.Bool("version", false, "Print version and exit")
-)
+const shotgunVersion = "v1.0"
 
 func main() {
-	flag.Parse()
-
-	if *ver {
-		fmt.Printf("shotgun %s\n", version)
-		os.Exit(0)
-	}
-
-	// no arguments passed or invalid directory filter
-	fRegexp, err := regexp.Compile(*f)
-	if len(flag.Args()) < 1 || err != nil {
+	params, err := parseFlags()
+	if err != nil {
+		log.Println(errors.WithMessage(err, "Error parsing flags"))
 		usage()
 		os.Exit(1)
 	}
 
-	// invalid working directory
-	f, err := ioutil.ReadDir(*dir)
-	if err != nil {
-		panic(err)
+	if err := params.shotgun(); err != nil {
+		log.Fatal(errors.WithMessage(err, "Unable to run shotgun"))
 	}
-
-	var (
-		c  = strings.Join(flag.Args(), " ")
-		wg = sync.WaitGroup{}
-		t  = make(chan struct{}, *throttle)
-	)
-
-	for _, d := range f {
-		wg.Add(1)
-		t <- struct{}{}
-		go func(d os.FileInfo) {
-			defer wg.Done()
-			defer func() { <-t }()
-			if d.IsDir() && fRegexp.MatchString(d.Name()) {
-				if *dryRun {
-					fmt.Printf("Would run '%s' in '%s'\n", c, d.Name())
-					return
-				}
-				command := cmd(d.Name(), c)
-				fmt.Printf("Running '%s' in '%s'\n", c, d.Name())
-				if *v {
-					command.Stdout = os.Stdout
-					command.Stderr = os.Stderr
-				}
-				command.Run()
-			}
-		}(d)
-	}
-	wg.Wait()
-}
-
-var usage = func() {
-	fmt.Fprintf(os.Stderr, "Shotgun is a tool for running commands in parallel on a set of directories.\n")
-	fmt.Fprintf(os.Stderr, "\nUsage:\n")
-	fmt.Fprintf(os.Stderr, "  shotgun [options] command\n")
-	fmt.Fprintf(os.Stderr, "\nOptions:\n")
-	flag.PrintDefaults()
-	fmt.Fprintf(os.Stderr, "\nExamples:\n")
-	fmt.Fprintf(os.Stderr, "  %s\n    \t%s\n",
-		"shotgun git pull",
-		"Run a command in each child directory of the current")
-	fmt.Fprintf(os.Stderr, "  %s\n    \t%s\n",
-		"shotgun -f '^a' git pull",
-		"Run a command in each directory beginning with the letter 'a'")
-	fmt.Fprintf(os.Stderr, "  %s\n    \t%s\n",
-		"shotgun -dir $GOPATH/src/github.com/bbrks git status --short",
-		"Run a command for each directory in '$GOPATH/src/github.com/bbrks'")
-	fmt.Fprintf(os.Stderr, "  %s\n    \t%s\n",
-		"shotgun 'git checkout -- .; git checkout develop; git fetch; git pull'",
-		"Wrap commands in quotes and separate by semicolons to chain sequentially")
-	fmt.Fprintf(os.Stderr, "  %s\n    \t%s\n",
-		"shotgun -dry-run 'rm .travis.yml'",
-		"Print what would be run where")
-
 }

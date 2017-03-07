@@ -31,10 +31,10 @@ What about removing all local changes and syncing with the remote master branche
 $ shotgun 'git fetch origin; git reset --hard origin/master; git clean -f'
 ```
 
-See how fast running commands in parallel vs. sequentially actually is:
+Not convinced yet? See just how fast running commands in parallel vs. sequentially actually is:
 
-<a href="https://asciinema.org/a/d3kj4vdi47orpl5tleqn0c9rx" target="_blank"><img src="https://asciinema.org/a/d3kj4vdi47orpl5tleqn0c9rx.png" width="250px"/></a>
-<a href="https://asciinema.org/a/b0d16ry57hsn1vfmq2ez7u1an" target="_blank"><img src="https://asciinema.org/a/b0d16ry57hsn1vfmq2ez7u1an.png" width="250px"/></a>
+<a href="https://asciinema.org/a/d3kj4vdi47orpl5tleqn0c9rx" target="_blank"><img src="http://i.imgur.com/7xqA67x.gif" width="250px"/></a>
+<a href="https://asciinema.org/a/b0d16ry57hsn1vfmq2ez7u1an" target="_blank"><img src="http://i.imgur.com/e9T6YY0.gif" width="250px"/></a>
 
 ## Usage
 
@@ -42,29 +42,37 @@ See how fast running commands in parallel vs. sequentially actually is:
 Shotgun is a tool for running commands in parallel on a set of directories.
 
 Usage:
-  shotgun [options] command
+	shotgun [options] command
 
 Options:
-  -d string
-    	Working directory - search from here (default ".")
-  -dry-run
-    	Print what would be run where, without actually doing it
-  -f string
-    	Filter directories by RE2 regexp (default ".*")
-  -version
-    	Print version and exit
+	-d directory
+		Working directory - search from here (default ".")
+	-f regexp
+		Filter directories by RE2 regexp (default ".*")
+	-c number
+		Maximum number of concurrent commands (default 64)
+	-v
+		Print all lines of command output
+	-dry
+		Print what would be run where, without actually doing it
+	-version
+		Print version and exit
 
 Examples:
-  shotgun git pull
-    	Run a command in each child directory of the current
-  shotgun -f '^a' git pull
-    	Run a command in each directory beginning with the letter 'a'
-  shotgun -dir $GOPATH/src/github.com/bbrks git status --short
-    	Run a command for each directory in '$GOPATH/src/github.com/bbrks'
-  shotgun 'git checkout -- .; git checkout develop; git fetch; git pull'
-    	Wrap commands in quotes and separate by semicolons to chain sequentially
-  shotgun -dry-run 'rm .travis.yml'
-    	Print what would be run where
+	shotgun git pull
+		Run a command in each child directory of the current
+
+	shotgun -f '^a' git pull
+		Run a command in each directory beginning with the letter 'a'
+
+	shotgun -d $GOPATH/src/github.com/bbrks git status --short
+		Run a command for each directory in '$GOPATH/src/github.com/bbrks'
+
+	shotgun 'git checkout -- .; git checkout develop; git fetch; git pull'
+		Wrap commands in quotes and separate by semicolons to chain sequentially
+
+	shotgun -dry 'rm .travis.yml'
+		Print what would be run where
 ```
 
 ## License
