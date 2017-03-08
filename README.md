@@ -38,7 +38,7 @@ Not convinced yet? See just how fast running commands in parallel vs. sequential
 
 ## Usage
 
-[embedmd]:# (doc.go /(\/\*)/ /\*\//)
+[embedmd]:# (doc.go /\/\*/ /\*\//)
 ```go
 /*
 
