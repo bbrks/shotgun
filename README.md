@@ -38,9 +38,9 @@ Not convinced yet? See just how fast running commands in parallel vs. sequential
 
 ## Usage
 
-[embedmd]:# (doc.go text /\*\n/ /\n\*/)
-```text
-*
+[embedmd]:# (doc.go /(\/\*)/ /\*\//)
+```go
+/*
 
 Shotgun is a tool for running commands in parallel on a set of directories.
 
@@ -77,7 +77,7 @@ Examples:
 	shotgun -dry 'rm .travis.yml'
 		Print what would be run where
 
-*
+*/
 ```
 
 ## License
