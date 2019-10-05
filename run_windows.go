@@ -6,6 +6,6 @@ import (
 )
 
 // Run a command from a directory.
-func run(d, c string) *exec.Cmd {
-	return exec.Command("cmd", "/C", fmt.Sprintf("cd %s & %s", d, c))
+func run(dir, cmd string) *exec.Cmd {
+	return exec.Command("cmd", "/C", fmt.Sprintf("cd %s & %s", dir, cmd))
 }

@@ -10,12 +10,12 @@ import (
 )
 
 type params struct {
-	f    *regexp.Regexp
-	c    int
-	v    bool
-	dry  bool
-	dirs []os.FileInfo
-	cmd  string
+	filter        *regexp.Regexp
+	maxConcurrent int
+	verbose       bool
+	dry           bool
+	dirs          []os.FileInfo
+	cmd           string
 	sync.WaitGroup
 }
 
@@ -25,17 +25,17 @@ func (p *params) shotgun() error {
 		return errors.New("invalid command")
 	}
 
-	t := make(chan struct{}, p.c)
+	throttle := make(chan struct{}, p.maxConcurrent)
 
 	for _, d := range p.dirs {
 		p.Add(1)
-		t <- struct{}{}
+		throttle <- struct{}{}
 
 		go func(d os.FileInfo) {
 			defer p.Done()
-			defer func() { <-t }()
+			defer func() { <-throttle }()
 
-			if d.IsDir() && p.f.MatchString(d.Name()) {
+			if d.IsDir() && p.filter.MatchString(d.Name()) {
 				if p.dry {
 					fmt.Printf("Would run '%s' in '%s'\n", p.cmd, d.Name())
 					return
@@ -43,7 +43,7 @@ func (p *params) shotgun() error {
 
 				command := run(d.Name(), p.cmd)
 
-				if p.v {
+				if p.verbose {
 					fmt.Printf("Running '%s' in '%s'\n", p.cmd, d.Name())
 					command.Stdout = os.Stdout
 					command.Stderr = os.Stderr

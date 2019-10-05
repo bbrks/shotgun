@@ -3,8 +3,6 @@ package main
 import (
 	"log"
 	"os"
-
-	"github.com/pkg/errors"
 )
 
 const shotgunVersion = "v1.0"
@@ -12,12 +10,12 @@ const shotgunVersion = "v1.0"
 func main() {
 	params, err := parseFlags()
 	if err != nil {
-		log.Println(errors.WithMessage(err, "Error parsing flags"))
+		log.Printf("Error parsing flags: %v\n", err)
 		usage()
 		os.Exit(1)
 	}
 
 	if err := params.shotgun(); err != nil {
-		log.Fatal(errors.WithMessage(err, "Unable to run shotgun"))
+		log.Printf("Unable to run shotgun: %v\n", err)
 	}
 }

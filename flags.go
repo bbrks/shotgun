@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -8,24 +9,22 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 func parseFlags() (*params, error) {
 	var (
-		f   = flag.String("f", ".*", "Filter directories by RE2 `regexp`")
-		d   = flag.String("d", ".", "Working `directory` - search from here")
-		c   = flag.Int("c", runtime.GOMAXPROCS(0)*8, "Maximum `number` of concurrent commands")
-		v   = flag.Bool("v", false, "Print all lines of command output")
-		dry = flag.Bool("dry", false, "Print what would be run where, without actually doing it")
-		ver = flag.Bool("version", false, "Print version and exit")
+		filter        = flag.String("f", ".*", "Filter directories by RE2 `regexp`")
+		workingDir    = flag.String("d", ".", "Working `directory` - search from here")
+		maxConcurrent = flag.Int("c", runtime.GOMAXPROCS(0)*8, "Maximum `number` of concurrent commands")
+		verbose       = flag.Bool("v", false, "Print all lines of command output")
+		dry           = flag.Bool("dry", false, "Print what would be run where, without actually doing it")
+		version       = flag.Bool("version", false, "Print version and exit")
 	)
 
 	flag.Usage = usage
 	flag.Parse()
 
-	if *ver {
+	if *version {
 		fmt.Printf("shotgun %s\n", shotgunVersion)
 		os.Exit(0)
 	}
@@ -34,23 +33,23 @@ func parseFlags() (*params, error) {
 		return nil, errors.New("invalid command")
 	}
 
-	fRegexp, err := regexp.Compile(*f)
+	fRegexp, err := regexp.Compile(*filter)
 	if err != nil {
-		return nil, errors.Wrap(err, "invalid directory filter")
+		return nil, fmt.Errorf("invalid directory filter: %w", err)
 	}
 
-	dirs, err := ioutil.ReadDir(*d)
+	dirs, err := ioutil.ReadDir(*workingDir)
 	if err != nil {
-		return nil, errors.Wrap(err, "invalid working directory")
+		return nil, fmt.Errorf("invalid working directory: %w", err)
 	}
 
 	return &params{
-		f:    fRegexp,
-		c:    *c,
-		v:    *v,
-		dry:  *dry,
-		dirs: dirs,
-		cmd:  strings.Join(flag.Args(), " "),
+		filter:        fRegexp,
+		maxConcurrent: *maxConcurrent,
+		verbose:       *verbose,
+		dry:           *dry,
+		dirs:          dirs,
+		cmd:           strings.Join(flag.Args(), " "),
 	}, nil
 }
 
