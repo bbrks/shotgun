@@ -3,7 +3,6 @@
 A tool for running commands in parallel on a set of directories.
 
 [![Build Status](https://travis-ci.org/bbrks/shotgun.svg)](https://travis-ci.org/bbrks/shotgun)
-[![GoDoc](https://godoc.org/github.com/bbrks/shotgun?status.svg)](https://godoc.org/github.com/bbrks/shotgun)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bbrks/shotgun)](https://goreportcard.com/report/github.com/bbrks/shotgun)
 [![GitHub tag](https://img.shields.io/github/tag/bbrks/shotgun.svg)](https://github.com/bbrks/shotgun/releases)
 [![license](https://img.shields.io/github/license/bbrks/shotgun.svg)](https://github.com/bbrks/shotgun/blob/master/LICENSE)
