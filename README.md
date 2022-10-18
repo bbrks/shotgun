@@ -12,7 +12,7 @@ Take the shotgun approach to your terminal. :boom:
 ## Installation/Updating
 
 ```sh
-$ go get -u github.com/bbrks/shotgun
+$ go install github.com/bbrks/shotgun@latest
 ```
 
 ## Why?
